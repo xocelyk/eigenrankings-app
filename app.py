@@ -75,7 +75,6 @@ def load_data(teams_list):
     games_tracked = []
     counter = 0
     for team in Teams():
-        print(team.name)
         for game in team.schedule:
             if game.boxscore_index in games_tracked and game.boxscore_index is not None:
                 continue
@@ -136,13 +135,9 @@ def load_future_games(data_dict):
     future_games = {}
     games_collected = []
     for key, value in data_dict.items():
-        print()
-        print(key, value)
         if value[2] is None:
             if [value[1], value[0], value[3]] in games_collected:
                 continue            # team1, team2, location, date
-            print('Success')
-            print(value)
             future_games[key] = [value[0], value[1], value[-2], value[-1]]
             games_collected.append([value[0], value[1], value[3]])
     return future_games
@@ -150,9 +145,7 @@ def load_future_games(data_dict):
 def turn_to_pctl(ranked):
     res = {}
     st_dev = np.std([i[1] for i in ranked.values()])
-    print(st_dev)
     mean = np.mean([i[1] for i in ranked.values()])
-    print(mean)
     for key, value in ranked.items():
         res[key] = (value[0], round(100 * norm.cdf(value[1] - mean/st_dev), 2))
     return res
@@ -190,7 +183,6 @@ def main():
     chosen_teams = st.sidebar.multiselect('Select the teams whose games you want to edit', options=teams_list)
     if len(chosen_teams) > 0:
         games_to_edit = future_games[future_games['team1'].isin(chosen_teams) | future_games['team2'].isin(chosen_teams)]
-        print(games_to_edit['date'])
         games_to_edit['sort_val'] = games_to_edit['date'].apply(sort_val_f)
         games_to_edit = games_to_edit.sort_values(by='sort_val')
         for boxscore_idx, game in games_to_edit.iterrows():
