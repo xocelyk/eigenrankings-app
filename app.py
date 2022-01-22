@@ -63,7 +63,6 @@ def get_teams_games_played(data_dict, teams_list):
             res[game[1]] += 1
     return res
 
-@st.cache
 def get_teams_list():
     teams_list = [team.name for team in teams]
     return teams_list
